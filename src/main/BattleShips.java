@@ -28,11 +28,11 @@ public class BattleShips extends Application{
         //uus põhiline layout tervele aknale
         HBox layout = new HBox();
         layout.setId("pane");
-        layout.setAlignment(Pos.CENTER);
+        layout.setAlignment(Pos.BOTTOM_CENTER);
 
         Button newGameButton = new Button("Uus mäng");
-        newGameButton.setPrefSize(300, 150);
-        newGameButton.setStyle("-fx-font-size: 200%");
+        newGameButton.setPrefSize(200, 75);
+        newGameButton.setStyle("-fx-font-size: 200%; -fx-background-color: rgba(255, 255, 255, 0.5);");
         newGameButton.setOnAction(event -> newGameAction());
 
 
