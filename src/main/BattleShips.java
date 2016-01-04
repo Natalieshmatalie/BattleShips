@@ -1,10 +1,10 @@
 package main;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
@@ -29,6 +29,7 @@ public class BattleShips extends Application{
         HBox layout = new HBox();
         layout.setId("pane");
         layout.setAlignment(Pos.BOTTOM_CENTER);
+        layout.setPadding(new Insets(0,0,150,0));
 
         Button newGameButton = new Button("Uus mäng");
         newGameButton.setPrefSize(200, 75);
@@ -37,12 +38,10 @@ public class BattleShips extends Application{
 
 
 
-
-
         layout.getChildren().addAll(newGameButton);
 
         // alguskuva, millel nupp "uus mäng"
-        Scene scene = new Scene(layout, 600, 850);
+        Scene scene = new Scene(layout, 500, 650);
         scene.getStylesheets().addAll(this.getClass().getResource("mainClass.css").toExternalForm());
         //määran programmi akna scene-iks vaikimisi scene-i
         window.setScene(scene);
@@ -52,8 +51,8 @@ public class BattleShips extends Application{
 
     public static void newGameAction(){
         //loon uue objekti "Game"
-        //game loob uue mänguvälja koos loogikaga
-        Game newGame = new Game(5, 5, 10);
+        // loob uue mängu, parameetriks laevade arv
+        Game newGame = new Game(10);
         //Game-il on oma scene. määran selle programmi akna jaoks
         Scene gameScene = newGame.getScene();
         window.setScene(gameScene);

@@ -6,28 +6,26 @@ import javafx.scene.control.Button;
 
 public class BoardField {
 
-    public int posX;
-    public int posY;
     //nupul asub laev
     private boolean hasShip;
     private Button button;
     private GameBoard parentBoard;
 
-    public BoardField(int posX, int posY, double sizeX, double sizeY, GameBoard parent){
-        //nupu asukoht mänguväljal
-        this.posX = posX;
-        this.posY = posY;
-        this.button = new Button();
-        this.button.setStyle("-fx-font-weight: bold");
-        this.button.setMinSize(sizeX, sizeY);
-        this.button.setOnAction(event -> {
-            clickButton(true);
-        });
-        this.parentBoard = parent;
+    public BoardField(GameBoard parentBoard, boolean clickAction){
+        button = new Button();
+        button.setStyle("-fx-font-weight: bold");
+        button.setMinSize(60, 60);
+        if (clickAction){
+            button.setOnAction(event -> {
+                clickButton(true);
+            });
+        }
+
+        this.parentBoard = parentBoard;
     }
 
     public void setHasShip(boolean value){
-        this.hasShip = value;
+        hasShip = value;
     }
 
     public boolean isHasShip() {
@@ -39,7 +37,8 @@ public class BoardField {
     }
 
     public void clickButton(boolean humanPlayer){
-        this.button.setDisable(true);
+        // lülitab nupu välja
+        button.setDisable(true);
         if (hasShip){
             button.setText("X");
             button.setStyle(
@@ -48,12 +47,12 @@ public class BoardField {
                             "-fx-font-size: 150%"
             );
             if (humanPlayer){
-                this.parentBoard.receiveButtonClick(true);
+                parentBoard.receiveButtonClick(true);
             }
         }else{
             button.setStyle("-fx-background-color: white");
             if (humanPlayer){
-                this.parentBoard.receiveButtonClick(false);
+                parentBoard.receiveButtonClick(false);
             }
         }
     }

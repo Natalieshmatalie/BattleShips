@@ -20,16 +20,19 @@ public class Game {
     private int enemyScore = 0;
     private Label message;
 
-    public Game(int sizeX, int sizeY, int shipCount){
+    public Game(int shipCount){
         VBox gameLayout = new VBox();
-        gameLayout.setPrefSize(400, 850);
+        gameLayout.setPrefSize(300, 650);
 
         Label playerLabel = new Label("Sinu mängulaud");
-        this.playerBoard = new GameBoard(sizeX, sizeY, shipCount, this);
+        // this on refereering sellele objektile, et nupp teaks, millise mängulaua poole pöörduda,
+        //falsega keelan enda mänguvälja nuppude klikkimise
+        playerBoard = new GameBoard(shipCount, this, false);
         GridPane playerGrid = playerBoard.getBoardLayout();
 
         Label enemyLabel = new Label ("Vastase mängulaud");
-        this.enemyBoard = new GameBoard(sizeX, sizeY, shipCount, this);
+        // truega luban endal vastase mängulaua nuppe klikkida
+        enemyBoard = new GameBoard(shipCount, this, true);
         GridPane enemyGrid = enemyBoard.getBoardLayout();
 
         //lisan elemendid
@@ -44,16 +47,16 @@ public class Game {
         button.setOnAction(event -> {
             BattleShips.newGameAction();
         });
-        this.playerScoreLabel = new Label("Sinu punkte: 0");
-        this.enemyScoreLabel = new Label("Arvuti punkte: 0");
-        this.message = new Label("");
+        playerScoreLabel = new Label("Sinu punkte: 0");
+        enemyScoreLabel = new Label("Vastase punkte: 0");
+        message = new Label("");
         //lisan layout-i
-        rightLayout.getChildren().addAll(button, this.playerScoreLabel, this.enemyScoreLabel, this.message);
+        rightLayout.getChildren().addAll(button, playerScoreLabel, enemyScoreLabel, message);
 
         //terve akna layout
         HBox fullLayout = new HBox();
         fullLayout.getChildren().addAll(gameLayout, rightLayout);
-        this.scene = new Scene(fullLayout, 600, 850);
+        scene = new Scene(fullLayout, 500, 650);
 
     }
 
@@ -62,38 +65,47 @@ public class Game {
     }
 
     public void endGame(){
-        this.message.setText("Mäng läbi!");
-        this.message.setStyle("-fx-font-size: 150%; -fx-text-fill: red");
+        if (playerScore > enemyScore){
+            message.setText("Sinu võit!");
+        } else if (playerScore < enemyScore){
+            message.setText("Oi oi, kaotasid!");
+        }else {
+            message.setText("Viik!");
+        }
+        message.setStyle("-fx-font-size: 150%; -fx-text-fill: red");
         //lülita nupud välja
-        this.playerBoard.disableButtons();
-        this.enemyBoard.disableButtons();
+        playerBoard.disableButtons();
+        enemyBoard.disableButtons();
     }
 
     public void enemyPlay(){
         //leiab mänguväljalt juhusliku nupu
-        int random = (int) (Math.random() * this.playerBoard.getButtonList().size());
+        int random = (int) (Math.random() * playerBoard.getButtonList().size());
 
         //klikin nupul
-        BoardField field = this.playerBoard.getButtonList().get(random);
+        BoardField field = playerBoard.getButtonList().get(random);
         field.clickButton(false);
 
         //eemaldan nupu mänguvälja nuppude nimekirjast, kuna sellele uuest nagunii klikkida ei saa
-        this.playerBoard.removeButton(field);
+        playerBoard.removeButton(field);
 
         //kui arvuti sai laevale pihta, mängigu uuesti
         if (field.isHasShip()){
             increaseEnemyScore();
-            enemyPlay();
+            if (playerBoard.getButtonList().size() > 0){
+                enemyPlay();
+            }
+
         }
     }
 
     public void increasePlayerScore(){
-        this.playerScore++;
-        this.playerScoreLabel.setText("Sinu punkte: " + Integer.toString(this.playerScore));
+        playerScore++;
+        playerScoreLabel.setText("Sinu punkte: " + playerScore);
     }
 
     public void increaseEnemyScore(){
-        this.enemyScore++;
-        this.enemyScoreLabel.setText("Arvuti punkte: " + Integer.toString(this.enemyScore));
+        enemyScore++;
+        enemyScoreLabel.setText("Vastase punkte: " + enemyScore);
     }
 }
