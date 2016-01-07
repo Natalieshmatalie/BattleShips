@@ -36,9 +36,7 @@ public class BattleShips extends Application{
         newGameButton.setStyle("-fx-font-size: 200%; -fx-background-color: rgba(255, 255, 255, 0.5);");
         newGameButton.setOnAction(event -> newGameAction());
 
-
-
-        layout.getChildren().addAll(newGameButton);
+        layout.getChildren().add(newGameButton);
 
         // alguskuva, millel nupp "uus mäng"
         Scene scene = new Scene(layout, 500, 650);

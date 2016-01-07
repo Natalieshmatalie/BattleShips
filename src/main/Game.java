@@ -19,14 +19,16 @@ public class Game {
     private Label enemyScoreLabel;
     private int enemyScore = 0;
     private Label message;
+    private int shipCount;
 
     public Game(int shipCount){
+        this.shipCount = shipCount;
         VBox gameLayout = new VBox();
         gameLayout.setPrefSize(300, 650);
 
         Label playerLabel = new Label("Sinu mängulaud");
         // this on refereering sellele objektile, et nupp teaks, millise mängulaua poole pöörduda,
-        //falsega keelan enda mänguvälja nuppude klikkimise
+        //loob mängija mänguvälja, falsega keelan enda mänguvälja nuppude klikkimise
         playerBoard = new GameBoard(shipCount, this, false);
         GridPane playerGrid = playerBoard.getBoardLayout();
 
@@ -37,7 +39,6 @@ public class Game {
 
         //lisan elemendid
         gameLayout.getChildren().addAll(playerLabel, playerGrid, enemyLabel, enemyGrid);
-
 
         //parempoolne layout
         VBox rightLayout = new VBox();
@@ -79,23 +80,25 @@ public class Game {
     }
 
     public void enemyPlay(){
-        //leiab mänguväljalt juhusliku nupu
+        //leiab mänguväljalt juhusliku arvu, mis on vahemikus 0 kuni kasutamata nuppude hulk
         int random = (int) (Math.random() * playerBoard.getButtonList().size());
 
-        //klikin nupul
+        //enemy klikib minu mänguvälja nupul
         BoardField field = playerBoard.getButtonList().get(random);
         field.clickButton(false);
 
         //eemaldan nupu mänguvälja nuppude nimekirjast, kuna sellele uuest nagunii klikkida ei saa
         playerBoard.removeButton(field);
 
-        //kui arvuti sai laevale pihta, mängigu uuesti
+        //kui enemy sai laevale pihta, saab uuesti mängida
         if (field.isHasShip()){
             increaseEnemyScore();
-            if (playerBoard.getButtonList().size() > 0){
+            if (playerBoard.getButtonList().size() > 0 && enemyScore < shipCount){
                 enemyPlay();
             }
-
+        }
+        if (enemyScore == shipCount){
+            endGame();
         }
     }
 

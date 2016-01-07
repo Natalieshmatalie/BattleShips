@@ -46,7 +46,7 @@ public class BoardField {
                             "-fx-text-fill: red; " +
                             "-fx-font-size: 150%"
             );
-            if (humanPlayer){
+            if (humanPlayer) {
                 parentBoard.receiveButtonClick(true);
             }
         }else{

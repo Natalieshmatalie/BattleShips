@@ -1,7 +1,6 @@
 package main;
 
 import javafx.scene.layout.GridPane;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,11 +13,12 @@ public class GameBoard {
     private int hitCount;
     private Game curGame;
 
+    //konstruktor, läheb käima koheselt, kui objekt luuakse
     public GameBoard(int shipCount, Game curGame, boolean enemyBoard){
         this.shipCount = shipCount;
         //loon uue layout-i nuppudega
         boardLayout = new GridPane();
-        //loon uue ArrayList-i, milles on kõikmänguvälja nupud
+        //loon uue ArrayList-i, milles on kõik mänguvälja nupud
         buttonList = new ArrayList<>();
         //refereering praegusele mänguObjektile
         this.curGame = curGame;
@@ -32,7 +32,7 @@ public class GameBoard {
                 GridPane.setConstraints(field.getButton(), i, j);
                 //lisan nupu gridpane-ile
                 boardLayout.getChildren().add(field.getButton());
-                //
+                //lisab nupu klikkimata nuppude nimekirja
                 buttonList.add(field);
             }
         }
